@@ -27,7 +27,7 @@ class BallMaster {
     public:
         BallMaster(int sx, int sy);
         void addBalls(int count);
-        void reset(float angle);
+        void reset(int level, float angle);
         void move(std::list<Block> &blocks);
         void render(SDL_Renderer* renderer);
         bool anyMoving();

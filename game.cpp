@@ -48,17 +48,14 @@ void Game::run() {
     }
 
     GameState gameState = GS_AIM;
-    
-    std::list<Block> blocks;
-    for (int x = 10; x < 450; x += 42) {
-        blocks.push_back(Block(x, 200, 5));
-    }
 
     int startX = WINDOW_WIDTH / 2;
     int startY = WINDOW_HEIGHT - 20;
 
+    BlockMaster blocks;
+    blocks.next(level);
+
     BallMaster balls(startX, startY);
-    balls.addBalls(9);
 
     int mx = startX;
     int my = startY;
@@ -79,7 +76,7 @@ void Game::run() {
                 else if (e.type == SDL_MOUSEBUTTONDOWN) {
                     gameState = GS_RUN;
                     float angle = atan((float)(mx-startX)/(float)(my-startY));
-                    balls.reset(angle);
+                    balls.reset(level, angle);
                 }
             }
         }
@@ -87,9 +84,13 @@ void Game::run() {
         // game logic
         if (gameState == GS_RUN) {
             // move ball
-            balls.move(blocks);
-            blocks.remove_if([](Block b){ return b.health == 0;});
-            if (!balls.anyMoving()) gameState = GS_AIM;
+            balls.move(blocks.blocklist);
+            if (!balls.anyMoving()) {
+                // turn is ending
+                ++level;
+                blocks.next(level);
+                gameState = GS_AIM;
+            }
         }
 
         // rendering
@@ -97,9 +98,7 @@ void Game::run() {
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-        for (auto block = blocks.begin(); block != blocks.end(); ++block) {
-            block->render(renderer);
-        }
+        blocks.render(renderer);
 
         if (gameState == GS_RUN) {
             SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);

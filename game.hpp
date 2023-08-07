@@ -9,4 +9,5 @@ class Game {
         void clean();
         SDL_Window *window;
         SDL_Renderer *renderer;
+        int level = 1;
 };

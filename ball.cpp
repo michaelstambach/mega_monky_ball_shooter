@@ -111,7 +111,11 @@ void BallMaster::addBalls(int count) {
     }
 }
 
-void BallMaster::reset(float angle) {
+void BallMaster::reset(int level, float angle) {
+    int bdiff = level - balls.size();
+    if (bdiff > 0) {
+        addBalls(bdiff);
+    }
     for (auto &ball: balls) {
         ball.state = BALL_READY;
         ball.px = stx;

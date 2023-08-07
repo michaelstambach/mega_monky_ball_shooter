@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <list>
 
 class Block {
     public:
@@ -11,4 +12,12 @@ class Block {
         int health;
         void render(SDL_Renderer* renderer);
         void hit();
+};
+
+
+class BlockMaster {
+    public:
+        void next(int level);
+        void render(SDL_Renderer* renderer);
+        std::list<Block> blocklist;
 };
