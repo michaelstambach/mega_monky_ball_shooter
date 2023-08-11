@@ -5,8 +5,6 @@
 
 class Block {
     public:
-        static const int BLOCK_WIDTH = 32;
-        static const int BLOCK_HEIGHT = 32;
         Block(int x, int y, int h);
         SDL_Rect rect;
         int health;
@@ -17,7 +15,11 @@ class Block {
 
 class BlockMaster {
     public:
+        BlockMaster();
         void next(int level);
         void render(SDL_Renderer* renderer);
         std::list<Block> blocklist;
+    private:
+        int block_gap = 0;
+        int block_interval = BLOCK_SIZE;
 };
