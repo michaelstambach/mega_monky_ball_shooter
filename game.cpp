@@ -75,6 +75,8 @@ void Game::run() {
     int mx = startX;
     int my = startY;
 
+    bool fast = false;
+
     while(!quit) {
         SDL_Event e;
         // event handling
@@ -82,6 +84,11 @@ void Game::run() {
             // handle all pending events
             if (e.type == SDL_QUIT) {
                 quit = true;
+            }
+            if (e.type == SDL_KEYUP) {
+                if (e.key.keysym.sym == SDLK_s) {
+                    fast = false;
+                }
             }
             if (gameState == GS_AIM) {
                 if (e.type == SDL_MOUSEMOTION) {
@@ -92,6 +99,13 @@ void Game::run() {
                     gameState = GS_RUN;
                     float angle = atan((float)(mx-startX)/(float)(my-startY));
                     balls.reset(level, angle);
+                }
+            }
+            if (gameState == GS_RUN) {
+                if (e.type == SDL_KEYDOWN) {
+                    if (e.key.keysym.sym == SDLK_s) {
+                        fast = true;
+                    }
                 }
             }
         }
@@ -125,7 +139,11 @@ void Game::run() {
             SDL_RenderDrawLine(renderer, WINDOW_WIDTH / 2, WINDOW_HEIGHT - 20, mx, my);
         }
         SDL_RenderPresent(renderer);
-        SDL_Delay(1000/60);
+        if (fast) {
+            SDL_Delay(2);
+        } else {
+            SDL_Delay(1000/60);
+        }
     }
 
     clean();
