@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <bitset>
+#include <string>
 
 Block::Block(int x, int y, int h) {
     rect.x = x;
@@ -12,8 +13,12 @@ Block::Block(int x, int y, int h) {
     health = h;
 }
 
-void Block::render(SDL_Renderer* renderer) {
-    if (health > 0) SDL_RenderDrawRect(renderer, &rect);
+void Block::render(SDL_Renderer* renderer, Textures* textures) {
+    if (health > 0) {
+        std::string str = std::to_string(health);
+        SDL_RenderCopy(renderer, textures->block, NULL, &rect);
+        textures->renderText(rect.x + 8, rect.y + 26, str.c_str());
+    }
 }
 
 void Block::hit() {
@@ -38,8 +43,8 @@ void BlockMaster::next(int level) {
     blocklist.remove_if([](Block b){ return b.health == 0;});
 }
 
-void BlockMaster::render(SDL_Renderer *renderer) {
+void BlockMaster::render(SDL_Renderer *renderer, Textures* textures) {
     for (auto &block : blocklist) {
-        block.render(renderer);
+        block.render(renderer, textures);
     }
 }

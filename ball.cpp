@@ -84,7 +84,7 @@ void Ball::move(std::list<Block> &blocks) {
     // << ", velocity is" << vx << " " << vy << std::endl;
 }
 
-void Ball::render(SDL_Renderer* renderer) {
+void Ball::render(SDL_Renderer* renderer, Textures* textures) {
     // ball is only visible when moving
     if (state != BALL_MOVE) return;
     SDL_Rect ballRect {
@@ -93,7 +93,7 @@ void Ball::render(SDL_Renderer* renderer) {
         2 * BALL_RADIUS,
         2 * BALL_RADIUS
     };
-    SDL_RenderFillRect(renderer, &ballRect);
+    SDL_RenderCopy(renderer, textures->ball, NULL, &ballRect);
 }
 
 BallMaster::BallMaster(int sx, int sy) {
@@ -145,9 +145,9 @@ void BallMaster::move(std::list<Block> &blocks) {
     }
 }
 
-void BallMaster::render(SDL_Renderer* renderer) {
+void BallMaster::render(SDL_Renderer* renderer, Textures* textures) {
     for (auto &ball: balls) {
-        ball.render(renderer);
+        ball.render(renderer, textures);
     }
 }
 

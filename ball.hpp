@@ -1,6 +1,7 @@
 
 #include <SDL2/SDL.h>
 #include <list>
+#include "textures.hpp"
 #include "block.hpp"
 
 enum BallState {
@@ -15,7 +16,7 @@ class Ball {
         // move and collide
         void move(std::list<Block> &blocks);
         // render the ball
-        void render(SDL_Renderer* renderer);
+        void render(SDL_Renderer* renderer, Textures* textures);
         BallState state;
         // position, should be private maybe idk if useful
         float px, py;
@@ -29,7 +30,7 @@ class BallMaster {
         void addBalls(int count);
         void reset(int level, float angle);
         void move(std::list<Block> &blocks);
-        void render(SDL_Renderer* renderer);
+        void render(SDL_Renderer* renderer, Textures* textures);
         bool anyMoving();
     private:
         std::list<Ball> balls;

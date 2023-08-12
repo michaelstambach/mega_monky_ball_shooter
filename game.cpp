@@ -20,6 +20,14 @@ bool Game::init() {
         return false;
     }
     
+    int imgFlags = IMG_INIT_PNG;
+    if( !( IMG_Init( imgFlags ) & imgFlags ) )
+    {
+        std::cout << "SDL Image module could not be initalized!" << std::endl
+                << "SDL Error: " << IMG_GetError() << std::endl;
+        return false;
+    }
+    
     window = SDL_CreateWindow("super monlky ball shooter :))",
                                 SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED,
@@ -37,6 +45,13 @@ bool Game::init() {
                 << "SDL Error: " << SDL_GetError() << std::endl;
         return false;
     }
+
+    textures = new Textures(renderer);
+    textures->loadTextures();
+
+
+    // seed random number generation
+    srand(time(NULL));
 
     return true;
 }
@@ -98,12 +113,12 @@ void Game::run() {
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-        blocks.render(renderer);
+        blocks.render(renderer, textures);
 
         if (gameState == GS_RUN) {
             SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0xFF, 0xFF);
             // render balls
-            balls.render(renderer);
+            balls.render(renderer, textures);
         }
         else if (gameState == GS_AIM) {
             SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
@@ -117,6 +132,8 @@ void Game::run() {
 }
 
 void Game::clean() {
+    textures->free();
+    IMG_Quit();
     if (renderer != NULL) SDL_DestroyRenderer(renderer);
     if (window != NULL) SDL_DestroyWindow(window);
     SDL_Quit();
