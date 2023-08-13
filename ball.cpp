@@ -34,7 +34,7 @@ void Ball::move(std::list<Block> &blocks) {
         // top
         vy = -vy;
     }
-    else if ((WINDOW_HEIGHT - 100 - ny) < BALL_RADIUS) {
+    else if ((WINDOW_HEIGHT - 60 - ny) < BALL_RADIUS) {
         // bottom, ball dies
         state = BALL_DEAD;
     }
@@ -96,29 +96,28 @@ void Ball::render(SDL_Renderer* renderer, Textures* textures) {
     SDL_RenderCopy(renderer, textures->ball, NULL, &ballRect);
 }
 
-BallMaster::BallMaster(int sx, int sy) {
+BallMaster::BallMaster(int sy) {
     // this already adds one ball to prevent unitilaize pointer :D
-    stx = sx;
     sty = sy;
-    Ball ball = Ball(sx, sy);
+    Ball ball = Ball(0, sy);
     balls.push_back(ball);
-    lastBall = &ball;
+    lastBall = &balls.front();
 }
 
 void BallMaster::addBalls(int count) {
     for (int i = 0; i < count; i++) {
-        balls.push_back(Ball(stx, sty));
+        balls.push_back(Ball(0, sty));
     }
 }
 
-void BallMaster::reset(int level, float angle) {
+void BallMaster::reset(int level, float angle, int startX) {
     int bdiff = level - balls.size();
     if (bdiff > 0) {
         addBalls(bdiff);
     }
     for (auto &ball: balls) {
         ball.state = BALL_READY;
-        ball.px = stx;
+        ball.px = startX;
         ball.py = sty;
         ball.vx = -sin(angle)*BALL_SPEED;
         ball.vy = -cos(angle)*BALL_SPEED;
@@ -142,6 +141,7 @@ void BallMaster::move(std::list<Block> &blocks) {
         // no ball is moving rn, start the first
         lastBall->state = BALL_MOVE;
         lastBall->move(blocks);
+        firstBall = lastBall;
     }
 }
 
@@ -156,4 +156,8 @@ bool BallMaster::anyMoving() {
         if (ball.state == BALL_MOVE) return true;
     }
     return false;
+}
+
+void BallMaster::updateStartPos(int &startX) {
+    startX = (int)firstBall->px;
 }

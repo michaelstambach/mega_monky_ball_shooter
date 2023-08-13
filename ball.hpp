@@ -26,14 +26,16 @@ class Ball {
 
 class BallMaster {
     public:
-        BallMaster(int sx, int sy);
+        BallMaster(int sy);
         void addBalls(int count);
-        void reset(int level, float angle);
+        void reset(int level, float angle, int startX);
         void move(std::list<Block> &blocks);
         void render(SDL_Renderer* renderer, Textures* textures);
         bool anyMoving();
+        void updateStartPos(int &startX);
     private:
         std::list<Ball> balls;
+        Ball *firstBall;
         Ball *lastBall;
-        int stx, sty;
+        int sty;
 };

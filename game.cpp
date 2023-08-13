@@ -65,12 +65,12 @@ void Game::run() {
     GameState gameState = GS_AIM;
 
     int startX = WINDOW_WIDTH / 2;
-    int startY = WINDOW_HEIGHT - 120;
+    const int startY = WINDOW_HEIGHT - 80;
 
     BlockMaster blocks;
     blocks.next(level);
 
-    BallMaster balls(startX, startY);
+    BallMaster balls(startY);
 
     int mx = startX;
     int my = startY;
@@ -98,7 +98,7 @@ void Game::run() {
                 else if (e.type == SDL_MOUSEBUTTONDOWN) {
                     gameState = GS_RUN;
                     float angle = atan((float)(mx-startX)/(float)(my-startY));
-                    balls.reset(level, angle);
+                    balls.reset(level, angle, startX);
                 }
             }
             if (gameState == GS_RUN) {
@@ -114,6 +114,7 @@ void Game::run() {
         if (gameState == GS_RUN) {
             // move ball
             balls.move(blocks.blocklist);
+            balls.updateStartPos(startX);
             if (!balls.anyMoving()) {
                 // turn is ending
                 ++level;
@@ -141,8 +142,19 @@ void Game::run() {
         }
         else if (gameState == GS_AIM) {
             SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-            SDL_RenderDrawLine(renderer, WINDOW_WIDTH / 2, WINDOW_HEIGHT - 20, mx, my);
+            SDL_RenderDrawLine(renderer, startX, startY, mx, my);
         }
+
+        // ================
+        // ==== MONKEY ====
+        // ================
+        SDL_Rect monkeyDestination {
+            startX - 16,
+            startY,
+            32, 64
+        };
+        SDL_RenderCopy(renderer, textures->monkey, NULL, &monkeyDestination);
+
         SDL_RenderPresent(renderer);
         if (fast) {
             SDL_Delay(2);
