@@ -74,6 +74,7 @@ void Game::run() {
 
     int mx = startX;
     int my = startY;
+    float angle = 0;
 
     bool fast = false;
 
@@ -94,10 +95,10 @@ void Game::run() {
                 if (e.type == SDL_MOUSEMOTION) {
                     mx = e.motion.x;
                     my = e.motion.y;
+                    angle = atan((float)(mx-startX)/(float)(my-startY));
                 }
                 else if (e.type == SDL_MOUSEBUTTONDOWN) {
                     gameState = GS_RUN;
-                    float angle = atan((float)(mx-startX)/(float)(my-startY));
                     balls.reset(level, angle, startX);
                 }
             }
@@ -141,8 +142,17 @@ void Game::run() {
             balls.render(renderer, textures);
         }
         else if (gameState == GS_AIM) {
-            SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-            SDL_RenderDrawLine(renderer, startX, startY, mx, my);
+            // SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+            // SDL_RenderDrawLine(renderer, startX, startY, mx, my);
+
+            SDL_Rect arrowDest = {
+                startX - 15,
+                startY - 128,
+                30, 128
+            };
+            SDL_Point arrowPivot = {16, 127};
+            float arrowAngle = -(angle / M_PIf) * 180.0;
+            SDL_RenderCopyEx(renderer, textures->arrow, NULL, &arrowDest, arrowAngle, &arrowPivot, SDL_FLIP_NONE);
         }
 
         // ================
