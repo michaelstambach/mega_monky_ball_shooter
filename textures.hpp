@@ -14,6 +14,7 @@ class Textures {
         SDL_Texture *block;
         // monkey
         SDL_Texture *monkey;
+        SDL_Texture *arrow;
         SDL_Texture *font;
     private:
         SDL_Renderer *renderer;

@@ -10,6 +10,7 @@ void Textures::loadTextures() {
     ball = IMG_LoadTexture(renderer, "textures/ball.png");
     block = IMG_LoadTexture(renderer, "textures/block.png");
     monkey = IMG_LoadTexture(renderer, "textures/monkey.png");
+    arrow = IMG_LoadTexture(renderer, "textures/arrow.png");
     font = IMG_LoadTexture(renderer, "font/font.png");
 }
 

@@ -17,7 +17,7 @@ void Block::render(SDL_Renderer* renderer, Textures* textures) {
     if (health > 0) {
         std::string str = std::to_string(health);
         SDL_RenderCopy(renderer, textures->block, NULL, &rect);
-        textures->renderText(rect.x + 8, rect.y + 26, str.c_str());
+        textures->renderText(rect.x + 10, rect.y + 26, str.c_str());
     }
 }
 
