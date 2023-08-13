@@ -37,7 +37,7 @@ void BlockMaster::next(int level) {
     }
     for (int i = 0; i < BLOCK_COLS; i++) {
         if (rand() % 2) {
-            blocklist.push_back(Block(block_gap + block_interval * i, 10, level));
+            blocklist.push_back(Block(block_gap + block_interval * i, 32 + block_interval, level));
         }
     }
     blocklist.remove_if([](Block b){ return b.health == 0;});

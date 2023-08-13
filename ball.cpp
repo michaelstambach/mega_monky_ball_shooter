@@ -30,11 +30,11 @@ void Ball::move(std::list<Block> &blocks) {
         // left, right
         vx = -vx;
     }
-    if (ny < BALL_RADIUS) {
+    if ((ny - 32) < BALL_RADIUS) {
         // top
         vy = -vy;
     }
-    else if ((WINDOW_HEIGHT - ny) < BALL_RADIUS) {
+    else if ((WINDOW_HEIGHT - 100 - ny) < BALL_RADIUS) {
         // bottom, ball dies
         state = BALL_DEAD;
     }

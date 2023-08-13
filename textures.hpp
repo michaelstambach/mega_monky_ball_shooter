@@ -9,6 +9,7 @@ class Textures {
         void loadTextures();
         void renderText(int x, int y, const char* text);
         void free();
+        SDL_Texture *bg;
         SDL_Texture *ball;
         SDL_Texture *block;
         SDL_Texture *font;

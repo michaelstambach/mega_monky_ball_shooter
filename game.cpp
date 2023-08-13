@@ -65,7 +65,7 @@ void Game::run() {
     GameState gameState = GS_AIM;
 
     int startX = WINDOW_WIDTH / 2;
-    int startY = WINDOW_HEIGHT - 20;
+    int startY = WINDOW_HEIGHT - 120;
 
     BlockMaster blocks;
     blocks.next(level);
@@ -125,6 +125,11 @@ void Game::run() {
         // rendering
         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
         SDL_RenderClear(renderer);
+
+        // background
+        SDL_RenderCopy(renderer, textures->bg, NULL, NULL);
+
+        textures->renderText(8, 8, std::to_string(level).c_str());
 
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
         blocks.render(renderer, textures);

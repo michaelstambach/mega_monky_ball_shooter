@@ -6,6 +6,7 @@ Textures::Textures(SDL_Renderer *rendererer) {
 }
 
 void Textures::loadTextures() {
+    bg = IMG_LoadTexture(renderer, "textures/bg.png");
     ball = IMG_LoadTexture(renderer, "textures/ball.png");
     block = IMG_LoadTexture(renderer, "textures/block.png");
     font = IMG_LoadTexture(renderer, "font/font.png");
